@@ -1,0 +1,27 @@
+services:
+
+  parabank:
+
+    # pinned by digest, so the app does not change if the image is rebuilt
+    image: parasoft/parabank:latest@sha256:4a122c72f653edb979b1b84d98c5c7e938b43f22f9e46d8e041de759390982a4
+
+    # web app on 8080; HSQLDB 9001 is published as 19001 to avoid a clash on the host
+    ports:
+      - "8080:8080"
+      - "19001:9001"
+
+    # fixed time zone, so logs and database timestamps are always in UTC
+    environment:
+      TZ: "UTC"
+
+    # The image has no curl, so the check uses bash /dev/tcp. The first start is slow.
+    healthcheck:
+      test:
+        - CMD
+        - bash
+        - -c
+        - 'exec 3<>/dev/tcp/127.0.0.1/8080; printf "GET /parabank/services/bank/openapi.json HTTP/1.0\r\n\r\n" >&3; IFS= read -r status <&3 && [[ "$$status" == *" 200 "* ]]'
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 120s
