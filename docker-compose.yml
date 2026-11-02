@@ -39,6 +39,9 @@ services:
 
   chrome:
     image: selenium/node-chrome:4.49.0-20260909
+    ports:
+      # noVNC on 7900, to watch the browser while a test runs.
+      - "7900:7900"
     shm_size: 2gb
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
@@ -54,6 +57,9 @@ services:
 
   firefox:
     image: selenium/node-firefox:4.49.0-20260909
+    ports:
+      # Each node serves noVNC on 7900 inside its container, so the host port must be different.
+      - "7901:7900"
     shm_size: 2gb
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
@@ -69,6 +75,8 @@ services:
 
   edge:
     image: selenium/node-edge:4.49.0-20260909
+    ports:
+      - "7902:7900"
     profiles: ["edge"]                    # not started by default
     shm_size: 2gb
     environment:
