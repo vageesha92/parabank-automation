@@ -14,7 +14,21 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>21</maven.compiler.release>
     <suite>api</suite>
+    <selenium.version>4.50.0</selenium.version>
   </properties>
+
+  <!-- BOMs keep each library family (Selenium, Jackson, Allure) on one version -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-bom</artifactId>
+        <version>${selenium.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
@@ -72,6 +86,12 @@
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <version>6.1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- version from selenium-bom -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
