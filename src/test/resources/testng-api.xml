@@ -8,6 +8,7 @@
     <!-- whole packages, so a new test class is picked up without editing this file -->
     <packages>
       <package name="io.github.vageesha92.api"/>
+      <package name="io.github.vageesha92.core"/>
     </packages>
   </test>
 

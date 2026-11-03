@@ -1,9 +1,12 @@
 package io.github.vageesha92.api;
 
+import io.github.vageesha92.core.Config;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+
+import java.net.URI;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -14,8 +17,9 @@ public class CustomerApiTest {
 
     @BeforeSuite
     public void seedDatabase() {
-        RestAssured.baseURI = "http://localhost:8080";
-        RestAssured.basePath = "/parabank/services/bank";
+        URI api = Config.get().apiBaseUri();
+        RestAssured.baseURI = api.getScheme() + "://" + api.getHost() + ":" + api.getPort();
+        RestAssured.basePath = api.getPath();
 
         given()
                 .when()
