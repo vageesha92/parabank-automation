@@ -1,6 +1,7 @@
 package io.github.vageesha92.core;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -17,10 +18,24 @@ public class DriverFactory {
             case FIREFOX -> new FirefoxOptions();
             case EDGE -> new EdgeOptions();
         };
+        WebDriver driver = null;
         try {
-            return new RemoteWebDriver(config.gridUrl().toURL(), options);
+             driver = new RemoteWebDriver(config.gridUrl().toURL(), options);
+
+            driver.manage().window().setSize(new Dimension(1366, 768));
+            return driver;
         } catch (MalformedURLException e) {
             throw new IllegalStateException("Bad grid.url: " + config.gridUrl(), e);
+        } catch (RuntimeException e) {
+            // session exists but setup failed: quit it, otherwise the Grid slot stays busy
+            if (driver != null) {
+                try {
+                    driver.quit();
+                } catch (RuntimeException quitFailure) {
+                    e.addSuppressed(quitFailure);
+                }
+            }
+            throw e;
         }
     }
 }
