@@ -9,6 +9,9 @@ public final class DriverManager {
     private DriverManager() {
         // utility class
     }
+    public static boolean hasDriver() {
+        return DRIVER.get() != null;
+    }
 
     public static void setDriver(WebDriver driver) {
         DRIVER.set(driver);

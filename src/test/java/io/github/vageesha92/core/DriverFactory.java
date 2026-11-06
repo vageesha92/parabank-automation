@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ThreadGuard;
 
 import java.net.MalformedURLException;
 
@@ -23,7 +24,10 @@ public class DriverFactory {
              driver = new RemoteWebDriver(config.gridUrl().toURL(), options);
 
             driver.manage().window().setSize(new Dimension(1366, 768));
-            return driver;
+
+            // ThreadGuard lets only the thread that created the driver use it.
+            // A call from another thread fails with a WebDriverException instead of causing a race.
+            return ThreadGuard.protect(driver);
         } catch (MalformedURLException e) {
             throw new IllegalStateException("Bad grid.url: " + config.gridUrl(), e);
         } catch (RuntimeException e) {
