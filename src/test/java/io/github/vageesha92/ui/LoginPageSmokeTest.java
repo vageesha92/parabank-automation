@@ -17,6 +17,8 @@ public class LoginPageSmokeTest extends BaseUiTest {
 
     @Test
     public void loginFormIsVisibleOnWelcomePage() {
+        logThread("Test login form");
+
         WebDriver driver = DriverManager.getDriver();
 
         driver.get(Config.get().uiBaseUrl() + "/index.htm");
