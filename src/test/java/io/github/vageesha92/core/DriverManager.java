@@ -4,35 +4,44 @@ import org.openqa.selenium.WebDriver;
 
 public final class DriverManager {
 
-    private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
+    private static final ThreadLocal<DriverSession> SESSION = new ThreadLocal<>();
 
     private DriverManager() {
         // utility class
     }
+
     public static boolean hasDriver() {
-        return DRIVER.get() != null;
+        return SESSION.get() != null;
     }
 
-    public static void setDriver(WebDriver driver) {
-        DRIVER.set(driver);
+    public static void setSession(DriverSession session) {
+        SESSION.set(session);
+    }
+
+    public static DriverSession current() {
+        DriverSession session = SESSION.get();
+        if (session == null) {
+            throw new IllegalStateException("No WebDriver set for this thread: " + Thread.currentThread().getName());
+        }
+        return session;
     }
 
     public static WebDriver getDriver() {
-        WebDriver driver = DRIVER.get();
-        if (driver == null) {
-            throw new IllegalStateException("No WebDriver set for this thread: " + Thread.currentThread().getName());
-        }
-        return driver;
+        return current().driver();
+    }
+
+    public static ActionListener getListener() {
+        return current().listener();
     }
 
     public static void quitDriver() {
-        WebDriver driver = DRIVER.get();
+        DriverSession session = SESSION.get();
         try {
-            if (driver != null) {
-              driver.quit();
+            if (session != null) {
+                session.driver().quit();
             }
         } finally {
-            DRIVER.remove();
+            SESSION.remove();
         }
     }
 }

@@ -28,7 +28,7 @@ public abstract class BaseUiTest {
                 DriverManager.hasDriver(),
                 "Thread '" + thread + "' already holds a driver before BeforeMethod. "
                         + "A previous test on this thread did not release it.");
-        DriverManager.setDriver(DriverFactory.create(Config.get()));
+        DriverManager.setSession(DriverFactory.create(Config.get()));
     }
 
     @AfterMethod(alwaysRun = true)
