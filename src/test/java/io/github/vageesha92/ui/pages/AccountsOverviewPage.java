@@ -43,6 +43,12 @@ public class AccountsOverviewPage extends BasePage {
         return rows;
     }
 
+    // returns an element on purpose, only for the stale element test
+    public WebElement firstAccountRow() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(TOTAL_CELL));
+        return driver.findElement(ACCOUNT_ROWS);
+    }
+
     public BigDecimal total() {
         return money(text(TOTAL_CELL));
     }
