@@ -8,6 +8,7 @@ import io.github.vageesha92.ui.pages.RegisterPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -26,5 +27,8 @@ public class AccountsOverviewTest extends BaseUiTest {
         List<AccountRow> accounts = overview.accounts();
 
         assertEquals(accounts.size(), 1, "a new customer starts with one account: " + accounts);
+
+        BigDecimal sum = accounts.stream().map(AccountRow::balance).reduce(BigDecimal.ZERO, BigDecimal::add);
+        assertEquals(overview.total(), sum, "Total must equal the sum of account balances: " + accounts);
     }
 }

@@ -43,6 +43,10 @@ public class AccountsOverviewPage extends BasePage {
         return rows;
     }
 
+    public BigDecimal total() {
+        return money(text(TOTAL_CELL));
+    }
+
     static BigDecimal money(String shown) {
         return new BigDecimal(shown.replace("$", "").replace(",", ""));
     }
