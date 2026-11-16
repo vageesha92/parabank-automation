@@ -1,6 +1,7 @@
 package io.github.vageesha92.ui.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 public class LoginPage extends BasePage {
@@ -22,6 +23,12 @@ public class LoginPage extends BasePage {
 
     public AccountsOverviewPage loginAs(String username, String password) {
         submit(username, password);
+        return new AccountsOverviewPage(driver);
+    }
+
+    public AccountsOverviewPage loginWithEnter(String username, String password) {
+        type(USERNAME, username);
+        type(PASSWORD, password + Keys.ENTER);
         return new AccountsOverviewPage(driver);
     }
 

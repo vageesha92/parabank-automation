@@ -27,6 +27,20 @@ public class LoginTest extends BaseUiTest {
     }
 
     @Test
+    public void loginWithEnterKey() {
+        WebDriver driver = DriverManager.getDriver();
+        String user = RegisterPage.uniqueUsername();
+        new RegisterPage(driver).open(Config.get().uiBaseUrl()).register(user, "secret1");
+        driver.manage().deleteAllCookies(); // log out by forgetting the session
+
+        AccountsOverviewPage overview = new LoginPage(driver)
+                .open(Config.get().uiBaseUrl())
+                .loginWithEnter(user, "secret1");
+
+        assertEquals(overview.title(), "Accounts Overview");
+    }
+
+    @Test
     public void wrongPasswordShowsError() {
         WebDriver driver = DriverManager.getDriver();
 
