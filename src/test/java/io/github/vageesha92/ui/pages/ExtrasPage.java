@@ -1,5 +1,6 @@
 package io.github.vageesha92.ui.pages;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,8 @@ public class ExtrasPage extends BasePage {
     private static final By MENU = By.id("accountMenu");
     private static final By MENU_TRIGGER = By.id("accountMenuTrigger");
     private static final By MENU_RESULT = By.id("menuResult");
+    private static final By TRANSFER = By.id("transferButton");
+    private static final By TRANSFER_RESULT = By.id("transferResult");
 
     public ExtrasPage(WebDriver driver) {
         super(driver);
@@ -45,6 +48,29 @@ public class ExtrasPage extends BasePage {
                 .perform();
 
         return text(MENU_RESULT);
+    }
+
+    // A browser dialog is not part of the page. switchTo().alert() is needed to reach it.
+    public String startTransfer() {
+        click(TRANSFER);
+        return wait.until(ExpectedConditions.alertIsPresent()).getText();
+    }
+
+    public String answerConfirm(boolean ok) {
+        Alert confirm = driver.switchTo().alert();
+        if (ok) {
+            confirm.accept();
+        } else {
+            confirm.dismiss();
+        }
+        Alert result = wait.until(ExpectedConditions.alertIsPresent());
+        String text = result.getText();
+        result.accept();
+        return text;
+    }
+
+    public String transferResult() {
+        return text(TRANSFER_RESULT);
     }
 
 }

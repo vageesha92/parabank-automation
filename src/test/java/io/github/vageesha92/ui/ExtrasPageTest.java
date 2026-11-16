@@ -16,4 +16,21 @@ public class ExtrasPageTest extends BaseUiTest {
 
         assertEquals(extras.chooseFromAccountMenu("menuStatements"), "You chose: Statements.");
     }
+
+    @Test
+    public void confirmedTransferShowsResultAlert() {
+        ExtrasPage extras = new ExtrasPage(DriverManager.getDriver()).open();
+        assertEquals(extras.startTransfer(), "Confirm this transfer?");
+
+        assertEquals(extras.answerConfirm(true), "Transfer complete: $100.00 to account 54321.");
+        assertEquals(extras.transferResult(), "Transfer complete: $100.00 to account 54321.");
+    }
+
+    @Test
+    public void cancelledTransferSaysSo() {
+        ExtrasPage extras = new ExtrasPage(DriverManager.getDriver()).open();
+        extras.startTransfer();
+        assertEquals(extras.answerConfirm(false), "Transfer cancelled.");
+        assertEquals(extras.transferResult(), "Transfer cancelled.");
+    }
 }
