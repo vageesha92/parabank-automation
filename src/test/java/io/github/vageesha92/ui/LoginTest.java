@@ -6,6 +6,7 @@ import io.github.vageesha92.ui.pages.AccountsOverviewPage;
 import io.github.vageesha92.ui.pages.LoginPage;
 import io.github.vageesha92.ui.pages.RegisterPage;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -40,15 +41,27 @@ public class LoginTest extends BaseUiTest {
         assertEquals(overview.title(), "Accounts Overview");
     }
 
-    @Test
-    public void wrongPasswordShowsError() {
-        WebDriver driver = DriverManager.getDriver();
+    // One row for each bad login: username, password and ParaBank's error text (messages.properties:189-190).
+    @DataProvider(name = "badLogins")
+    public Object[][] badLogins() {
+        return new Object[][] {
+                // Empty username
+                {"", "secret1", "Please enter a username and password."},
 
-        LoginPage loginPage = new LoginPage(driver)
-                .open(Config.get().uiBaseUrl());
-        String error = loginPage.loginExpectingError("unknownUser123", "wrongPassword");
+                // Empty password
+                {"validuser", "", "Please enter a username and password."},
 
-        assertEquals(error, "The username and password could not be verified.");
+                // Wrong password
+                {"validuser", "wrongpassword", "The username and password could not be verified."}
+        };
+    }
 
+    @Test(dataProvider = "badLogins")
+    public void badLoginShowsError(String username, String password, String expectedError) {
+        String actualError = new LoginPage(DriverManager.getDriver())
+                .open(Config.get().uiBaseUrl())
+                .loginExpectingError(username, password);
+
+        assertEquals(actualError, expectedError);
     }
 }
