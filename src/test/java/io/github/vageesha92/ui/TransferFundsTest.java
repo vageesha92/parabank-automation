@@ -31,6 +31,23 @@ public class TransferFundsTest extends BaseUiTest {
 
         String result = new TransferFundsPage(driver).open(base).transfer("25", first, second);
         assertEquals(result, "Transfer Complete!");
+
+        driver.get(base + "/overview.htm");
+
+        Map<String, BigDecimal> after = balances(new AccountsOverviewPage(driver));
+
+        assertEquals(
+                after.get(first),
+                before.get(first).subtract(new BigDecimal("25.00")),
+                "Source account balance should decrease by 25"
+        );
+
+        assertEquals(
+                after.get(second),
+                before.get(second).add(new BigDecimal("25.00")),
+                "Destination account balance should increase by 25"
+        );
+
     }
 
     private static Map<String, BigDecimal> balances(AccountsOverviewPage overview) {
