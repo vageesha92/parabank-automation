@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ParaBank extras (practice page)</title>
+  <link rel="stylesheet" href="extras.css">
+</head>
+<body>
+<div id="topPanel">
+  <div class="brand">Para<span>Bank</span> extras</div>
+  <div class="note">A practice page for Selenium tests. Not part of ParaBank; nothing here talks to a server.</div>
+</div>
+<div id="bodyPanel">
+  <div id="leftPanel">
+    <p>Practice parts:</p>
+    <ul>
+      <li><a href="#transfer">Transfer confirm</a></li>
+      <li><a href="#chat">Help chat</a></li>
+      <li><a href="#upload">Statement upload</a></li>
+      <li><a href="#menu">Account menu</a></li>
+      <li><a href="#payeesPart">Favourite payees</a></li>
+    </ul>
+  </div>
+  <div id="rightPanel">
+    <h1 class="title">ParaBank extras (practice page)</h1>
+
+    <h2 id="transfer">Transfer funds</h2>
+    <p>Transfer <b id="transferAmount">$100.00</b> from account <b>13344</b> to account <b>54321</b>.</p>
+    <button id="transferButton" class="button" type="button">Transfer</button>
+    <div id="transferResult" class="result"></div>
+
+    <h2 id="chat">Help chat</h2>
+    <iframe id="helpChat" name="helpChat" src="chat.html" title="Help chat"></iframe>
+
+    <h2 id="upload">Upload a statement</h2>
+    <input id="statementFile" type="file" accept=".txt,.csv,.pdf">
+    <div id="uploadResult" class="result"></div>
+
+    <h2 id="menu">Account menu</h2>
+    <div id="accountMenu">
+      <span class="trigger" id="accountMenuTrigger">My account &#9662;</span>
+      <ul id="accountMenuItems">
+        <li><a id="menuProfile" href="#profile">Update profile</a></li>
+        <li><a id="menuStatements" href="#statements">Statements</a></li>
+        <li><a id="menuLogout" href="#logout">Log out</a></li>
+      </ul>
+    </div>
+    <div id="menuResult" class="result"></div>
+
+    <h2 id="payeesPart">Favourite payees (drag to reorder)</h2>
+    <ul id="payees">
+      <li data-payee="Electric Co">Electric Co</li>
+      <li data-payee="Water Board">Water Board</li>
+      <li data-payee="City Rent">City Rent</li>
+      <li data-payee="Phone Plus">Phone Plus</li>
+    </ul>
+    <div id="payeeOrder" class="result"></div>
+  </div>
+</div>
+<script src="extras.js"></script>
+</body>
+</html>

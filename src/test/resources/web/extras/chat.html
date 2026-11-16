@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Help chat (practice)</title>
+  <style>
+    body { margin: 0; padding: 8px; font: 13px/1.4 Arial, Helvetica, sans-serif; background: #f7f9fb; }
+    #chatLog { list-style: none; padding: 0; margin: 0 0 8px; height: 110px; overflow-y: auto; }
+    #chatLog li { padding: 2px 0; }
+    #chatLog li.agent { color: #1f4a7a; }
+    .button { background: #1f4a7a; color: #fff; border: 0; padding: 4px 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <ul id="chatLog"><li class="agent">Agent: Hello, how can we help?</li></ul>
+  <input id="chatInput" type="text" placeholder="Type a question" aria-label="Your question">
+  <button id="chatSend" class="button" type="button">Send</button>
+  <script>
+    document.getElementById('chatSend').addEventListener('click', function () {
+      var input = document.getElementById('chatInput');
+      if (!input.value) return;
+      var log = document.getElementById('chatLog');
+      var me = document.createElement('li'); me.className = 'me'; me.textContent = 'You: ' + input.value;
+      var agent = document.createElement('li'); agent.className = 'agent';
+      agent.textContent = 'Agent: Thanks, an agent will answer soon.';
+      log.appendChild(me); log.appendChild(agent);
+      input.value = '';
+    });
+  </script>
+</body>
+</html>

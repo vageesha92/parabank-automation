@@ -26,6 +26,21 @@ services:
       retries: 3
       start_period: 120s
 
+  # Practice page for features ParaBank does not have (static files served by nginx).
+  # The browser in the node container opens http://extras/.
+  extras:
+    image: nginx:1.31.8-alpine
+    volumes:
+      - ./src/test/resources/web/extras:/usr/share/nginx/html:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      # Only for opening the page by hand at http://localhost:8081/. Tests do not use this port.
+      - "8081:80"
+
   selenium-hub:
     image: selenium/hub:4.49.0-20260909
     ports:
@@ -58,6 +73,7 @@ services:
 
   firefox:
     image: selenium/node-firefox:4.49.0-20260909
+    profiles: ["firefox"]                 # off for now: the laptop has 7.6 GB of memory
     ports:
       # Each node serves noVNC on 7900 inside its container, so the host port must be different.
       - "7901:7900"
