@@ -17,6 +17,10 @@ public class ExtrasPage extends BasePage {
     private static final By MENU_RESULT = By.id("menuResult");
     private static final By TRANSFER = By.id("transferButton");
     private static final By TRANSFER_RESULT = By.id("transferResult");
+    private static final By HELP_CHAT = By.id("helpChat");
+    private static final By CHAT_INPUT = By.id("chatInput");
+    private static final By CHAT_SEND = By.id("chatSend");
+    private static final By CHAT_LAST_LINE = By.cssSelector("#chatLog li:last-child");
 
     public ExtrasPage(WebDriver driver) {
         super(driver);
@@ -73,4 +77,24 @@ public class ExtrasPage extends BasePage {
         return text(TRANSFER_RESULT);
     }
 
+    public String heading() {
+        return text(HEADING);
+    }
+
+    // the chat is a separate page in an <iframe>; the driver sees one page at a time
+    public boolean chatBoxInMainPage() {
+        return !driver.findElements(CHAT_INPUT).isEmpty();
+    }
+
+    // switches back to the main page before returning
+    public String askHelpChat(String question) {
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(HELP_CHAT)); // switchTo().frame(...)
+        try {
+            type(CHAT_INPUT, question);
+            click(CHAT_SEND);
+            return text(CHAT_LAST_LINE);
+        } finally {
+            driver.switchTo().defaultContent();
+        }
+    }
 }

@@ -33,4 +33,13 @@ public class ExtrasPageTest extends BaseUiTest {
         assertEquals(extras.answerConfirm(false), "Transfer cancelled.");
         assertEquals(extras.transferResult(), "Transfer cancelled.");
     }
+
+    @Test
+    public void helpChatAnswersInsideItsFrame() {
+        ExtrasPage extras = new ExtrasPage(DriverManager.getDriver()).open();
+        assertFalse(extras.chatBoxInMainPage(), "the chat box is inside the iframe, not in the main page");
+
+        assertEquals(extras.askHelpChat("Why was my login refused?"), "Agent: Thanks, an agent will answer soon.");
+        assertEquals(extras.heading(), "ParaBank extras (practice page)", "back on the main page");
+    }
 }
