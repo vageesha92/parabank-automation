@@ -45,4 +45,9 @@ public abstract class BasePage {
         wait.until(d -> (Boolean) ((JavascriptExecutor) d)
                 .executeScript("return !!window.jQuery && jQuery.active === 0"));
     }
+
+    // hover and drag only work when the target is inside the window
+    protected void scrollToCentre(By locator) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'})", visible(locator));
+    }
 }
