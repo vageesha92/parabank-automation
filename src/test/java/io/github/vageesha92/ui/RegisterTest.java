@@ -30,4 +30,25 @@ public class RegisterTest extends BaseUiTest {
         String actualError = page.errorFor(path);
         assertEquals(actualError, expectedError);
     }
+
+    // Each label on the register form and the name of its input (register.jsp:11-108).
+    @DataProvider(name = "labels")
+    public Object[][] labels() {
+        return new Object[][] {
+                {"First Name:", "customer.firstName"}, {"Last Name:", "customer.lastName"},
+                {"Address:", "customer.address.street"}, {"City:", "customer.address.city"},
+                {"State:", "customer.address.state"}, {"Zip Code:", "customer.address.zipCode"},
+                {"Phone #:", "customer.phoneNumber"}, {"SSN:", "customer.ssn"},
+                {"Username:", "customer.username"}, {"Password:", "customer.password"},
+                {"Confirm:", "repeatedPassword"},
+        };
+    }
+
+    @Test(dataProvider = "labels")
+    public void fieldBesideEachLabelIsItsInput(String label, String expectedName) {
+        RegisterPage page = new RegisterPage(DriverManager.getDriver()).open(Config.get().uiBaseUrl());
+
+        String actualName = page.nameOfFieldBeside(label);
+        assertEquals(actualName, expectedName, "input beside '" + label + "'");
+    }
 }

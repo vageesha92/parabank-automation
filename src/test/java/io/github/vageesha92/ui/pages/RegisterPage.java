@@ -2,6 +2,8 @@ package io.github.vageesha92.ui.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.locators.RelativeLocator;
 
 public class RegisterPage extends BasePage {
 
@@ -35,6 +37,11 @@ public class RegisterPage extends BasePage {
     // Spring puts the error in <span id="<path>.errors">
     public String errorFor(String path) {
         return text(By.id(path + ".errors"));
+    }
+
+    public String nameOfFieldBeside(String label) {
+        WebElement b = visible(By.xpath("//form[@id='customerForm']//b[normalize-space()='" + label + "']"));
+        return driver.findElement(RelativeLocator.with(By.tagName("input")).straightRightOf(b)).getDomAttribute("name");
     }
 
     private void fillAll(String username, String password) {
