@@ -126,6 +126,13 @@
       <artifactId>jackson-databind</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- JDBC driver for ParaBank's database, same version as its HSQLDB server -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.7.4</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>
