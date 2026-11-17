@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "The accounts of one customer (GET /customers/{id}/accounts)",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["id", "customerId", "type", "balance"],
+    "properties": {
+      "id": { "type": "integer" },
+      "customerId": { "type": "integer" },
+      "type": { "enum": ["CHECKING", "SAVINGS", "LOAN"] },
+      "balance": { "type": "number" }
+    }
+  }
+}

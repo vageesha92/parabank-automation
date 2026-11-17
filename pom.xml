@@ -95,6 +95,13 @@
       <version>6.1.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- JSON schema validation for API responses -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>6.1.0</version>
+      <scope>test</scope>
+    </dependency>
     <!-- version from selenium-bom -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
