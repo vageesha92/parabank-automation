@@ -11,7 +11,8 @@ public record Config(
         URI apiBaseUri,
         String uiBaseUrl,
         URI gridUrl,
-        Browser browser
+        Browser browser,
+        String dbUrl
 ) {
 
     private static final Config INSTANCE = load();
@@ -37,7 +38,8 @@ public record Config(
                 URI.create(read(file, "api.baseUri")),
                 read(file, "ui.baseUrl"),
                 URI.create(read(file, "grid.url")),
-                Browser.valueOf(read(file, "browser").toUpperCase(Locale.ROOT)));
+                Browser.valueOf(read(file, "browser").toUpperCase(Locale.ROOT)),
+                read(file, "db.url"));
     }
 
     // A -D value on the command line wins over the file.
