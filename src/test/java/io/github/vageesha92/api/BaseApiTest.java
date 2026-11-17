@@ -9,6 +9,8 @@ public abstract class BaseApiTest {
     // resets the demo data (john, 12212) - not safe in a parallel run
     @BeforeSuite
     public void resetTheBank() {
-        given(ApiSpec.bank()).post("/initializeDB").then().statusCode(204);
+        given(ApiSpec.bank())
+                .post("/initializeDB")
+                .then().statusCode(204);
     }
 }
