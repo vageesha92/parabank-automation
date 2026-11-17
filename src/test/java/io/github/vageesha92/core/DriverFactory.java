@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ThreadGuard;
 import org.openqa.selenium.support.events.EventFiringDecorator;
@@ -23,7 +24,11 @@ public class DriverFactory {
         };
         WebDriver driver = null;
         try {
-             driver = new RemoteWebDriver(config.gridUrl().toURL(), options);
+            RemoteWebDriver remote = new RemoteWebDriver(config.gridUrl().toURL(), options);
+            // Lets sendKeys(path) on a file input upload a file from this machine to the node.
+            // It must be set here, before the driver is augmented and wrapped.
+            remote.setFileDetector(new LocalFileDetector());
+            driver = remote;
 
             driver.manage().window().setSize(new Dimension(1366, 768));
 
