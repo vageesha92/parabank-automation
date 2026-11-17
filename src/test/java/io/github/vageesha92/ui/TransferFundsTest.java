@@ -1,5 +1,6 @@
 package io.github.vageesha92.ui;
 
+import io.github.vageesha92.api.AccountClient;
 import io.github.vageesha92.core.Config;
 import io.github.vageesha92.core.DriverManager;
 import io.github.vageesha92.ui.pages.AccountsOverviewPage;
@@ -48,6 +49,10 @@ public class TransferFundsTest extends BaseUiTest {
                 "Destination account balance should increase by 25"
         );
 
+        // same balances through the API (JSON can say 415.5 where the page shows 415.50)
+        AccountClient api = new AccountClient();
+        assertEquals(api.balanceOf(Long.parseLong(first)).setScale(2), after.get(first), "server, account " + first);
+        assertEquals(api.balanceOf(Long.parseLong(second)).setScale(2), after.get(second), "server, account " + second);
     }
 
     private static Map<String, BigDecimal> balances(AccountsOverviewPage overview) {
