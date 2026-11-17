@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.nio.file.Path;
+
 public class ExtrasPage extends BasePage {
 
     public static final String URL = "http://extras/";
@@ -21,6 +23,8 @@ public class ExtrasPage extends BasePage {
     private static final By CHAT_INPUT = By.id("chatInput");
     private static final By CHAT_SEND = By.id("chatSend");
     private static final By CHAT_LAST_LINE = By.cssSelector("#chatLog li:last-child");
+    private static final By STATEMENT_FILE = By.id("statementFile");
+    private static final By UPLOAD_RESULT = By.id("uploadResult");
 
     public ExtrasPage(WebDriver driver) {
         super(driver);
@@ -96,5 +100,12 @@ public class ExtrasPage extends BasePage {
         } finally {
             driver.switchTo().defaultContent();
         }
+    }
+
+    // To upload, sendKeys on a file input takes a file path.
+    public String uploadStatement(Path file) {
+        driver.findElement(STATEMENT_FILE).sendKeys(file.toAbsolutePath().toString());
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(UPLOAD_RESULT, "rows)."));
+        return text(UPLOAD_RESULT);
     }
 }

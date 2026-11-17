@@ -16,11 +16,19 @@
 
   // 2. The help chat is in chat.html, inside the iframe.
 
-  // 3. Statement upload: the page shows what it received (name and size). No server.
+  // 3. Statement upload: shows the file name, size and number of CSV data rows
+  //    (non-empty lines after the header). Everything happens in the browser, there is no server.
   document.getElementById('statementFile').addEventListener('change', function (e) {
     var f = e.target.files[0];
-    document.getElementById('uploadResult').textContent =
-      f ? 'Received ' + f.name + ' (' + f.size + ' bytes).' : 'No file.';
+    var out = document.getElementById('uploadResult');
+    if (!f) { out.textContent = 'No file.'; return; }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var lines = String(reader.result).split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
+      var rows = Math.max(0, lines.length - 1);
+      out.textContent = 'Received ' + f.name + ' (' + f.size + ' bytes, ' + rows + ' rows).';
+    };
+    reader.readAsText(f);
   });
 
   // 4. Account menu: opened by CSS :hover. Clicking an item shows which one was chosen.
