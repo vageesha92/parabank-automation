@@ -1,10 +1,12 @@
 package io.github.vageesha92.ui;
 
 import io.github.vageesha92.api.AccountClient;
+import io.github.vageesha92.api.WebSession;
 import io.github.vageesha92.core.Config;
 import io.github.vageesha92.core.DriverManager;
 import io.github.vageesha92.ui.pages.AccountsOverviewPage;
 import io.github.vageesha92.ui.pages.AccountsOverviewPage.AccountRow;
+import io.github.vageesha92.ui.pages.LoginPage;
 import io.github.vageesha92.ui.pages.OpenAccountPage;
 import io.github.vageesha92.ui.pages.RegisterPage;
 import io.github.vageesha92.ui.pages.TransferFundsPage;
@@ -23,7 +25,9 @@ public class TransferFundsTest extends BaseUiTest {
     public void transferMovesMoneyBetweenTwoAccounts() {
         WebDriver driver = DriverManager.getDriver();
         String base = Config.get().uiBaseUrl();
-        new RegisterPage(driver).open(base).register(RegisterPage.uniqueUsername(), "secret1");
+        String user = RegisterPage.uniqueUsername();
+        WebSession.register(user, "secret1");                                       // over HTTP, no browser
+        new LoginPage(driver).useSession(base, WebSession.logIn(user, "secret1")); // skip the login form
         String second = new OpenAccountPage(driver).open(base).openAccount("SAVINGS");
 
         driver.get(base + "/overview.htm");
