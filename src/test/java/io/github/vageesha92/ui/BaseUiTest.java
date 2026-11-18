@@ -7,6 +7,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.Assert;
 
 public abstract class BaseUiTest {
@@ -20,15 +22,18 @@ public abstract class BaseUiTest {
         logThread("BeforeSuite");
     }
 
+    // browser comes from testng-ui.xml; with -Dtest there is no parameter, so Config decides
     @BeforeMethod
-    public void startBrowser() {
+    @Parameters("browser")
+    public void startBrowser(@Optional("") String browser) {
         String thread = Thread.currentThread().getName();
-        logThread("BeforeMethod");
+        Config config = browser.isBlank() ? Config.get() : Config.get().withBrowser(browser);
+        logThread("BeforeMethod " + config.browser());
         Assert.assertFalse(
                 DriverManager.hasDriver(),
                 "Thread '" + thread + "' already holds a driver before BeforeMethod. "
                         + "A previous test on this thread did not release it.");
-        DriverManager.setSession(DriverFactory.create(Config.get()));
+        DriverManager.setSession(DriverFactory.create(config));
     }
 
     @AfterMethod(alwaysRun = true)

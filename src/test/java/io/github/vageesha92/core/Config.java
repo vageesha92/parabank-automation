@@ -42,6 +42,10 @@ public record Config(
                 read(file, "db.url"));
     }
 
+    public Config withBrowser(String name) {
+        return new Config(apiBaseUri, uiBaseUrl, gridUrl, Browser.valueOf(name.toUpperCase(Locale.ROOT)), dbUrl);
+    }
+
     // A -D value on the command line wins over the file.
     private static String read(Properties file, String key) {
         String value = System.getProperty(key, file.getProperty(key));
