@@ -34,6 +34,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- staying on 2.x for now, 3.0.0 is a new major version with no patch release yet -->
+      <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-bom</artifactId>
+        <version>2.35.5</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -131,6 +139,18 @@
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>2.7.4</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Allure listener for TestNG, picked up automatically -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-testng</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- adds API requests and responses to the Allure report -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
