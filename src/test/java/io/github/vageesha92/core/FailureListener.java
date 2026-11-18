@@ -27,5 +27,6 @@ public class FailureListener implements ITestListener {
                 "png"
         );
         Allure.addAttachment("last actions", String.join("\n", DriverManager.getListener().lastActions()));
+        Allure.addAttachment("browser console", String.join("\n", DriverManager.getConsole().lines()));
     }
 }
