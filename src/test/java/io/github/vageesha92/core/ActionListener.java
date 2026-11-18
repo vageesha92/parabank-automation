@@ -37,8 +37,8 @@ public class ActionListener implements WebDriverListener {
     }
 
     private void record(Method method, Object[] args, String outcome) {
-        if (method.getName().equals("getScreenshotAs")) {
-            return; // a screenshot is not a test step
+        if (method.getName().equals("getScreenshotAs") || method.getName().equals("getBiDi")) {
+            return; // screenshots and the BiDi connection for console logs are not test steps
         }
         long ms = (System.nanoTime() - startTime) / 1_000_000;
         // sendKeys text can be a password, so it is never logged

@@ -34,11 +34,19 @@ public final class DriverManager {
         return current().listener();
     }
 
+    public static BrowserConsole getConsole() {
+        return current().console();
+    }
+
     public static void quitDriver() {
         DriverSession session = SESSION.get();
         try {
             if (session != null) {
-                session.driver().quit();
+                try {
+                    session.console().close(); // stop listening before the browser closes
+                } finally {
+                    session.driver().quit();
+                }
             }
         } finally {
             SESSION.remove();

@@ -61,6 +61,8 @@ services:
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
       - SE_NODE_MAX_SESSIONS=2
+      # hub URL as seen from the test JVM, needed for BiDi (otherwise the WebSocket uses the node IP)
+      - SE_NODE_GRID_URL=http://localhost:4444
     depends_on:
       selenium-hub:
         condition: service_started
@@ -80,6 +82,8 @@ services:
     shm_size: 2gb
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
+      # hub URL as seen from the test JVM, needed for BiDi (otherwise the WebSocket uses the node IP)
+      - SE_NODE_GRID_URL=http://localhost:4444
     depends_on:
       selenium-hub:
         condition: service_started
@@ -98,6 +102,8 @@ services:
     shm_size: 2gb
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
+      # hub URL as seen from the test JVM, needed for BiDi (otherwise the WebSocket uses the node IP)
+      - SE_NODE_GRID_URL=http://localhost:4444
     depends_on:
       selenium-hub:
         condition: service_started

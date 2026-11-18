@@ -12,15 +12,19 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ThreadGuard;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 
+import static org.openqa.selenium.UnexpectedAlertBehaviour.IGNORE;
+
 import java.net.MalformedURLException;
 
 public class DriverFactory {
 
     public static DriverSession create(Config config) {
         Capabilities options = switch (config.browser()) {
-            case CHROME -> new ChromeOptions();
-            case FIREFOX -> new FirefoxOptions();
-            case EDGE -> new EdgeOptions();
+            // enableBiDi() is needed to read the browser console.
+            // IGNORE: with BiDi on, alerts were closed automatically before the test could handle them.
+            case CHROME -> new ChromeOptions().enableBiDi().setUnhandledPromptBehaviour(IGNORE);
+            case FIREFOX -> new FirefoxOptions().enableBiDi().setUnhandledPromptBehaviour(IGNORE);
+            case EDGE -> new EdgeOptions().enableBiDi().setUnhandledPromptBehaviour(IGNORE);
         };
         WebDriver driver = null;
         try {
@@ -38,7 +42,8 @@ public class DriverFactory {
 
             // ThreadGuard lets only the thread that created the driver use it.
             // A call from another thread fails with a WebDriverException instead of causing a race.
-            return new DriverSession(ThreadGuard.protect(decorated), listener);
+            WebDriver guarded = ThreadGuard.protect(decorated);
+            return new DriverSession(guarded, listener, new BrowserConsole(guarded));
         } catch (MalformedURLException e) {
             throw new IllegalStateException("Bad grid.url: " + config.gridUrl(), e);
         } catch (RuntimeException e) {
