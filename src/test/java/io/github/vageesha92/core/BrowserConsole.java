@@ -21,6 +21,10 @@ public final class BrowserConsole implements AutoCloseable {
         return List.copyOf(lines);
     }
 
+    public boolean has(String start) {
+        return lines.stream().anyMatch(line -> line.startsWith(start));
+    }
+
     @Override
     public void close() {
         inspector.close();

@@ -16,6 +16,8 @@ public class AccountsOverviewPage extends BasePage {
     private static final By ACCOUNT_ROWS = By.cssSelector("#accountTable tbody tr:has(td a)");
 
     private static final By TOTAL_CELL = By.xpath("//table[@id='accountTable']//tr[td/b[text()='Total']]/td[2]");
+    // The error block the page shows instead of the table when the accounts call fails.
+    private static final By ERROR_TEXT = By.cssSelector("#showError p.error");
 
     public record AccountRow(String id, BigDecimal balance) { }
 
@@ -51,6 +53,10 @@ public class AccountsOverviewPage extends BasePage {
 
     public BigDecimal total() {
         return money(text(TOTAL_CELL));
+    }
+
+    public String errorText() {
+        return text(ERROR_TEXT);
     }
 
     static BigDecimal money(String shown) {
