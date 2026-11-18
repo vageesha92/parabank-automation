@@ -1,5 +1,7 @@
 package io.github.vageesha92.core;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.model.Status;
 import org.openqa.selenium.support.events.WebDriverListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,8 @@ public class ActionListener implements WebDriverListener {
         String line = method.getName() + " " + what + " " + ms + " ms " + outcome;
         LOG.info(line);
         actions.add(line);
+        // failed calls show as BROKEN steps in Allure
+        Allure.step(line, outcome.equals("OK") ? Status.PASSED : Status.BROKEN);
     }
 
     public List<String> lastActions() {
