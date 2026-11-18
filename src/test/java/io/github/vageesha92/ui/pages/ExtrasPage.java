@@ -25,6 +25,8 @@ public class ExtrasPage extends BasePage {
     private static final By CHAT_LAST_LINE = By.cssSelector("#chatLog li:last-child");
     private static final By STATEMENT_FILE = By.id("statementFile");
     private static final By UPLOAD_RESULT = By.id("uploadResult");
+    private static final By PAYEES = By.id("payees");
+    private static final By PAYEE_ORDER = By.id("payeeOrder");
 
     public ExtrasPage(WebDriver driver) {
         super(driver);
@@ -107,5 +109,21 @@ public class ExtrasPage extends BasePage {
         driver.findElement(STATEMENT_FILE).sendKeys(file.toAbsolutePath().toString());
         wait.until(ExpectedConditions.textToBePresentInElementLocated(UPLOAD_RESULT, "rows)."));
         return text(UPLOAD_RESULT);
+    }
+
+    // The page listens to pointer events, which Actions sends in every browser.
+    public String dragPayeeBelow(String payee, String target) {
+        scrollToCentre(PAYEES); // a drag below the fold throws MoveTargetOutOfBoundsException in both browsers
+        WebElement from = driver.findElement(By.cssSelector("#payees li[data-payee='" + payee + "']"));
+        WebElement to = driver.findElement(By.cssSelector("#payees li[data-payee='" + target + "']"));
+        int dy = to.getRect().getY() - from.getRect().getY() + to.getRect().getHeight() / 4;
+        new Actions(driver)
+                .moveToElement(from)
+                .clickAndHold()
+                .moveByOffset(0, dy / 2)
+                .moveByOffset(0, dy - dy / 2)
+                .release()
+                .perform();
+        return text(PAYEE_ORDER);
     }
 }
