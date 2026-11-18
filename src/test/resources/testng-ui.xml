@@ -3,6 +3,11 @@
 
 <suite name="UI Suite" data-provider-thread-count="2">
 
+  <!-- registered here so it runs before Allure's listener closes the test in the report -->
+  <listeners>
+    <listener class-name="io.github.vageesha92.core.FailureListener"/>
+  </listeners>
+
   <test name="UI Tests" parallel="methods" thread-count="2">
     <packages>
       <package name="io.github.vageesha92.ui"/>

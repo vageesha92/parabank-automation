@@ -1,6 +1,7 @@
 package io.github.vageesha92.api;
 
 import io.github.vageesha92.core.Config;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.LogConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -19,6 +20,7 @@ public final class ApiSpec {
                 .setAccept(ContentType.JSON)               // ParaBank returns XML unless we ask for JSON
                 .setConfig(RestAssuredConfig.config().logConfig(
                         LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails()))
+                .addFilter(new AllureRestAssured())
                 .build();
     }
 }
