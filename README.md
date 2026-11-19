@@ -48,3 +48,13 @@ Code is in `src/test/java/io/github/vageesha92/`:
 Suites are `src/test/resources/testng-api.xml` and `testng-ui.xml`. CI is in `.github/workflows/ci.yml`.
 
 ## Known limits
+
+- ParaBank's API needs no login, so I did not test authentication.
+- The API tests reset the demo data (`POST /initializeDB`), and the UI tests use the same data, so I run the two
+  suites one after the other, never at the same time.
+- I run the UI tests only in Chrome and Firefox, not Edge or Safari.
+
+## More
+
+- [How the driver works](docs/driver-lifecycle.md)
+- [Test strategy](docs/TEST_STRATEGY.md)
